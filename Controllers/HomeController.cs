@@ -60,7 +60,7 @@ namespace VMS_NET6._0_MVC.Controllers
 
             foreach (var file in files)
             {
-                if (file.Length > 5200) // 200MB in bytes
+                if (file.Length > 209715200) // 200MB in bytes
                 {
                     ViewBag.Message = "An error occurred whilst uploading file(s). Response Code 413. Please try again.";
                     return View("Upload");
