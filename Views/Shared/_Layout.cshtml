@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VMS_NET6.0_MVC</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" /> <!-- Your existing CSS -->
+
+    <!-- Optional: Bootstrap Icons (if needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
+    <!-- Optional: Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        main.container {
+            margin: 0 !important;
+            padding: 10px 15px !important;
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            background-color: #2a363b;
+            min-height: calc(100vh - 150px);
+            max-width: 4000px;
+        }
+    </style>
+    <script>
+        function updateURL() {
+            if (window.location.pathname !== "/") {
+                history.pushState({}, '', '/');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            updateURL();
+        });
+
+        function updateFileLabel() {
+            const fileInput = document.getElementById('file');
+            const filenames = document.getElementsByName('files')
+            const fileLabel = document.getElementById('fileLabel');
+            console.log('File input changed'); // Debugging line
+            console.log(fileInput.files.length); // Debugging line
+
+            console.log(fileInput.files); // Debugging line
+            if (fileInput.files.length > 1) {        
+                
+                fileLabel.textContent = fileInput.files.length + " files" ;
+                console.log('Selected files1 ' + fileLabel.textContent); // Debugging line
+            } else if (fileInput.files.length == 1) {
+                fileLabel.textContent = fileInput.files[0].name;
+                console.log('Selected files2 ' + fileLabel.textContent); // Debugging line
+            } else if(fileInput.files.length == 0) {
+                fileLabel.textContent = 'No file chosen';
+                console.log('No file chosen'); // Debugging line
+            }
+        }
+
+
+        function playVideo(videoUrl) {
+            var videoPlayer = document.getElementById('videoPlayer');
+            var videoSource = document.getElementById('videoSource');
+            console.log('videoSource.src1' + videoSource); // Debugging line
+
+            console.log(videoSource); // Debugging line
+            console.log(videoSource.textContent); // Debugging line
+            videoSource.src = videoUrl;
+            videoPlayer.load();
+            videoPlayer.play();
+        }
+
+
+    </script>
+
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="black-background-title">
+                <a href="javascript:void(0);" onclick="navigateTo('Home/_Catalogue')">
+                    Video Catalogue
+                </a>
+            </div>
+            <div class="row">
+                <div class="col-1 nav-tile" href="javascript:void(0);" onclick="navigateTo('Home/Catalogue')">
+                    <p>Catalogue</p>
+                </div>
+                <div class="col-1 nav-tile" href="javascript:void(0);" onclick="navigateTo('Home/Upload')">
+                    <p>Upload</p>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        function navigateTo(page) {
+            fetch('/' + page)
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('main.container').innerHTML = html;
+                    updateURL();
+                })
+                .catch(error => console.log(error));
+        }
+    </script>
+
+
+</body>
+</html>
