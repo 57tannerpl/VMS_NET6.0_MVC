@@ -7,4 +7,8 @@
     <RootNamespace>VMS_NET6._0_MVC</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>
