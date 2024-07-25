@@ -28,53 +28,172 @@
             min-height: calc(100vh - 150px);
             max-width: 4000px;
         }
+
+        .video-display-window.active {
+            border: 2px solid red;
+        }
+
+        .video-display-window {
+            border: 1px solid #ddd;
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Aspect ratio of 16:9 (height/width * 100%) */
+            background-color: black;
+            overflow: hidden;
+        }
+
+        /* Default style: controls hidden */
+            .video-display-window video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            pointer-events: none !important;
+        }
+
+            /* When video is playing: controls visible */
+            .video-display-window video.playing {
+                pointer-events: auto !important;
+            }
+
     </style>
+
     <script>
+        let activePlayerId = 'videoPlayer1'; // Default active player
+
         function updateURL() {
             if (window.location.pathname !== "/") {
                 history.pushState({}, '', '/');
             }
         }
 
+        // Add event listener to handle video play, pause, and ended
         document.addEventListener('DOMContentLoaded', (event) => {
+
+
+
+            document.querySelectorAll('video').forEach(video => {
+                video.addEventListener('play', function () {
+                    console.log('Video playing:', this.id);
+                    this.parentElement.classList.add('active');
+                });
+                video.addEventListener('pause', function () {
+                    console.log('Video paused:', this.id);
+                    this.parentElement.classList.remove('active');
+                });
+                video.addEventListener('ended', function () {
+                    console.log('Video ended:', this.id);
+                    this.parentElement.classList.remove('active');
+                });
+            });
+
             updateURL();
+            setActiveWindow(activePlayerId); // Set default active window on load
+
+            // Observe changes in the DOM and update URL if necessary
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        updateURL();
+                    }
+                });
+            });
+
+            // Configuration of the observer
+            const config = { childList: true, subtree: true };
+
+            // Target node to observe
+            const targetNode = document.body;
+
+            // Start observing the target node for configured mutations
+            observer.observe(targetNode, config);
         });
+
+        function stopPropagation(event) {
+            event.stopPropagation();
+        }
 
         function updateFileLabel() {
             const fileInput = document.getElementById('file');
-            const filenames = document.getElementsByName('files')
             const fileLabel = document.getElementById('fileLabel');
             console.log('File input changed'); // Debugging line
             console.log(fileInput.files.length); // Debugging line
 
             console.log(fileInput.files); // Debugging line
-            if (fileInput.files.length > 1) {        
-                
-                fileLabel.textContent = fileInput.files.length + " files" ;
+            if (fileInput.files.length > 1) {
+                fileLabel.textContent = fileInput.files.length + " files";
                 console.log('Selected files1 ' + fileLabel.textContent); // Debugging line
             } else if (fileInput.files.length == 1) {
                 fileLabel.textContent = fileInput.files[0].name;
                 console.log('Selected files2 ' + fileLabel.textContent); // Debugging line
-            } else if(fileInput.files.length == 0) {
+            } else if (fileInput.files.length == 0) {
                 fileLabel.textContent = 'No file chosen';
                 console.log('No file chosen'); // Debugging line
             }
         }
 
-
         function playVideo(videoUrl) {
-            var videoPlayer = document.getElementById('videoPlayer');
-            var videoSource = document.getElementById('videoSource');
-            console.log('videoSource.src1' + videoSource); // Debugging line
+            var videoPlayer = document.getElementById(activePlayerId);
+            var videoSource = videoPlayer.getElementsByTagName('source')[0];
 
-            console.log(videoSource); // Debugging line
-            console.log(videoSource.textContent); // Debugging line
+            // Update the source and reload the video
             videoSource.src = videoUrl;
             videoPlayer.load();
+
+            // Add 'playing' class to show controls
+            videoPlayer.classList.add('playing');
+
+            // Play the video
             videoPlayer.play();
         }
 
+        function setActiveWindow(playerId) {
+            // Get all video display windows
+            var videoWindows = document.getElementsByClassName('video-display-window');
 
+            // Remove the active class from all video display windows
+            for (var i = 0; i < videoWindows.length; i++) {
+                videoWindows[i].classList.remove('active');
+            }
+
+            // Set the active player ID
+            activePlayerId = playerId;
+
+            // Add the active class to the current video display window
+            var activePlayer = document.getElementById(playerId);
+            activePlayer.parentElement.classList.add('active');
+
+
+        }
+
+        /*function setActiveWindow(playerId) {
+            // Get all video display windows
+            var videoWindows = document.getElementsByClassName('video-display-window');
+            console.log('Video ended0:', videoWindows[0].classList)
+            console.log('Video ended1:', videoWindows[1].classList)
+            // Remove the active class from all video display windows
+            for (var i = 0; i < videoWindows.length; i++) {
+                videoWindows[i].classList.remove('active');
+                videoWindows[i].classList.remove('playing');
+            }
+
+            // Set the active player ID
+            activePlayerId = playerId;
+
+            // Add the active class to the current video display window
+            var activePlayer = document.getElementById(playerId);
+            activePlayer.parentElement.classList.add('active');
+
+            // Add 'playing' class to show controls
+            activePlayer.parentElement.classList.add('playing');
+            activePlayer.classList.add('playing');
+            console.log('activePlayer', activePlayer.classList); // Debugging line
+
+            console.log('Video ended0:', videoWindows[0].classList)
+            console.log('Video ended1:', videoWindows[1].classList)
+        } */
     </script>
 
 </head>
@@ -112,7 +231,5 @@
                 .catch(error => console.log(error));
         }
     </script>
-
-
 </body>
 </html>
