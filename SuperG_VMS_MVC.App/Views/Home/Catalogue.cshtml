@@ -1,0 +1,73 @@
+﻿@model List<VMS_NET6._0_MVC.Models.VideoFileInfo>
+
+@{
+    ViewData["Title"] = "Catalogue";
+}
+
+
+
+    @if (Model != null && Model.Count > 0)
+    {
+        
+        <div class="blue-background-text">
+            <a>
+                Select a video from the table to start playback.
+            </a>
+        </div>
+
+       
+
+    <div class="row">
+        <div class="col-6">
+            <div class="video-display-window mb-3" onclick="setActiveWindow('videoPlayer1')">
+                <video id="videoPlayer1" controls class="embed-responsive-item" style="pointer-events: none;">
+                    <source id="videoSource1" src="" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="video-display-window mb-3" onclick="setActiveWindow('videoPlayer2')">
+                <video id="videoPlayer2" controls class="embed-responsive-item" style="pointer-events: none;">
+                    <source id="videoSource2" src="" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+        
+        <div class="video-list-table">
+            <table class="table mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="col-9">Video Filename</th>
+                        <th class="col-3">File Size KB</th>
+                    </tr>
+                </thead>
+
+            </table>
+
+            <table class="table  table-dark table-striped mb-0">
+                <tbody>
+                @foreach (var video in Model)
+                {
+                    <tr onclick="playVideo('@Url.Content("~/uploads/" + video.FileName)')">
+                        <td class="col-9">@video.FileName</td>
+                        <td class="col-3">@video.FileSize</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    
+
+    
+    }
+    else
+    {
+        
+        <div class="blue-background-text">
+            <a>
+                The catalogue is empty. Use the upload form to add videos.
+            </a>
+        </div>
+    }
+
