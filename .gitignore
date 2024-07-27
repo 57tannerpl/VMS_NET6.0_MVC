@@ -1,7 +1,7 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
+/.vs
 /.vs/ProjectEvaluation
 /.vs/SuperG_VMS_MVC/DesignTimeBuild
 /.vs/SuperG_VMS_MVC/v17/.suo
