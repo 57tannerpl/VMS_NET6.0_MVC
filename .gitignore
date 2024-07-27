@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+/.vs
+/.vs/ProjectEvaluation
+/.vs/SuperG_VMS_MVC/DesignTimeBuild
+/.vs/SuperG_VMS_MVC/v17/.suo
+/.vs/SuperG_VMS_MVC/v17/.futdcache.v2
+/.vs/SuperG_VMS_MVC/FileContentIndex/e7e1abec-3a95-4d6c-8a27-0c5450ea7c87.vsidx
+/.vs/SuperG_VMS_MVC/FileContentIndex/6c804b2b-b86c-4ded-8f61-8b7702221598.vsidx
+/.vs/SuperG_VMS_MVC/FileContentIndex/12e2c0a7-0b3b-4e9f-a622-eaa7f8df288d.vsidx
