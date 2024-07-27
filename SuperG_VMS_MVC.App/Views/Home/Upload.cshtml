@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Upload";
+}
+@section Scripts {
+    <script>
+        // Function to update the file input label
+        
+    </script>
+}
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="upload-error-text">
+            <a>@ViewBag.Message</a>
+        </div>
+    }
+<div class="blue-background-text">
+    <a>
+        Choose MP4 files to upload to the Video Catalogue
+    </a>
+</div>
+<form enctype="multipart/form-data" method="post" asp-action="UploadFiles">
+    <div>
+        <label for="file" class="custom-file-upload">
+            Browse File(s)
+        </label>
+        <input type="file" name="files" id="file" class="file-input" onchange="updateFileLabel()" multiple accept=".mp4" >
+        <span id="fileLabel" class="file-label-nochosen">No file chosen</span> <!-- Display file name here -->
+    </div>
+    <div>
+        <button type="submit" class="custom-upload-button white-text">Upload</button>
+    </div>
+</form>
+
+
+
